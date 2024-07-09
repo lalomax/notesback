@@ -24,9 +24,9 @@ app.get("/api/notes/:id", (request, response, next) => {
 });
 
 app.delete("/api/notes/:id", (request, response) => {
-  const id = Number(request.params.id);
-  notes = notes.filter((note) => note.id !== id);
-console.log(notes)
+  Note.deleteOne({ _id: request.params.id }).then(result => {
+    console.log(result);
+  })
   response.status(204).end();
 });
 
