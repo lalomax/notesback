@@ -1,34 +1,34 @@
 require('dotenv').config()
-const express = require("express");
-const app = express();
+const express = require('express')
+const app = express()
 const Note = require('./models/note')
 
-app.use(express.json());
+app.use(express.json())
 app.use(express.static('dist'))
 
-app.get("/api/notes", (request, response) => {
+app.get('/api/notes', (request, response) => {
   Note.find({}).then(notes => {
     response.json(notes)
   })
-});
+})
 
-app.get("/api/notes/:id", (request, response, next) => {
+app.get('/api/notes/:id', (request, response, next) => {
   Note.findById(request.params.id).then(note => {
     if (note) {
       response.json(note)
     } else {
       response.status(404).end()
     }
-  }) 
-  .catch(error => next(error))
-});
-
-app.delete("/api/notes/:id", (request, response) => {
-  Note.deleteOne({ _id: request.params.id }).then(result => {
-    console.log(result);
   })
-  response.status(204).end();
-});
+    .catch(error => next(error))
+})
+
+app.delete('/api/notes/:id', (request, response) => {
+  Note.deleteOne({ _id: request.params.id }).then(result => {
+    console.log(result)
+  })
+  response.status(204).end()
+})
 
 
 app.put('/api/notes/:id', (request, response, next) => {
@@ -48,7 +48,7 @@ app.put('/api/notes/:id', (request, response, next) => {
 
 //add new entries
 
-app.post("/api/notes", (request, response, next) => {
+app.post('/api/notes', (request, response, next) => {
   const body = request.body
 
   const note = new Note({
@@ -59,8 +59,8 @@ app.post("/api/notes", (request, response, next) => {
   note.save().then(savedNote => {
     response.json(savedNote)
   })
-  .catch(error => next(error))
-});
+    .catch(error => next(error))
+})
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
@@ -77,7 +77,7 @@ const errorHandler = (error, request, response, next) => {
 // este debe ser el último middleware cargado, ¡también todas las rutas deben ser registrada antes que esto!
 app.use(errorHandler)
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT
 app.listen(PORT, () => {
-  console.log(`server runninG on port ${PORT}`);
-});
+  console.log(`server runninG on port ${PORT}`)
+})
